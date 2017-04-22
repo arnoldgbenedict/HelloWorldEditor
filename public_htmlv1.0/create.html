@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      
+      <link rel="icon" type="image/png" href="icon.png">
+      <title>Editor - Create Webpage</title>
+      
+      <link href="https://fonts.googleapis.com/css?family=Crafty+Girls" rel="stylesheet">
+      
+    <!-- font-awesome -->  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">  
+      
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+      
+      
+      <style>
+          
+          #tr_cover {
+              opacity:    0.78; 
+              background: #000; 
+              width:      100%;
+              height:     100%; 
+              z-index:    1080 !important;
+              top:        0; 
+              left:       0; 
+              position:   fixed;
+              text-align-last: center;
+              margin: 0;
+              padding: 0;
+              color: white;
+              font-family: 'Crafty Girls', cursive;
+              vertical-align: middle;
+              display: table-cell;
+          }
+      
+         body {
+            background-color: #3f4143;
+            overflow: hidden;
+         }
+
+        /* Toggle Styles */
+
+        #wrapper {
+            padding-left: 0;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled {
+            padding-left: 250px;
+        }
+
+        #sidebar-wrapper {
+            z-index: 1000;
+            position: fixed;
+            left: 250px;
+            width: 0;
+            height: 100%;
+            margin-left: -250px;
+            overflow-y: auto;
+            background: #000;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+        }
+
+        #wrapper.toggled #sidebar-wrapper {
+            width: 250px;
+        }
+
+        #page-content-wrapper {
+            width: 100%;
+            position: absolute;
+            padding: 15px;
+        }
+
+        #wrapper.toggled #page-content-wrapper {
+            position: absolute;
+            margin-right: -250px;
+        }
+
+        /* Sidebar Styles */
+
+        .sidebar-nav {
+            position: absolute;
+            top: 0;
+            width: 250px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .sidebar-nav li {
+            text-indent: 20px;
+            line-height: 40px;
+        }
+
+        .sidebar-nav li a {
+            display: block;
+            text-decoration: none;
+            color: #999999;
+        }
+
+        .sidebar-nav li a:hover {
+            text-decoration: none;
+            color: #fff;
+            background: rgba(255,255,255,0.2);
+        }
+
+        .sidebar-nav li a:active,
+        .sidebar-nav li a:focus {
+            text-decoration: none;
+        }
+
+        .sidebar-nav > .sidebar-brand {
+            height: 65px;
+            font-size: 18px;
+            line-height: 60px;
+        }
+
+        .sidebar-nav > .sidebar-brand a {
+            color: #999999;
+        }
+
+        .sidebar-nav > .sidebar-brand a:hover {
+            color: #fff;
+            background: none;
+        }
+          
+          #menu-toggle{
+              margin-left: -23px;
+              padding: 30px 10px 30px 10px;
+              border-left: 0;
+              border-top-left-radius: 0;
+              border-bottom-left-radius: 0;
+              float: left;
+              color: #999999;
+              background-color: #000000;
+              position: fixed;
+              z-index: 1;
+          }
+          
+          #runJS{
+              margin-left: -106px;
+              margin-top: 300px;
+              padding: 8px 20px 5px 20px;
+              float: left;
+              position: fixed;
+              z-index: 1;
+              -webkit-transform: rotate(-90deg);
+          }
+          
+          .sidebar-nav .activeSide {
+              background: #0275d8;
+              border-radius: 0;
+              color: white;
+          }
+          .sidebar-nav .activeSide:hover {
+              background: #0058a0;
+              border-radius: 0;
+              color: white;
+          }
+          
+          #output {
+              margin-top: -21px;
+              position: fixed;
+              bottom: 5px;
+              right: 5px;
+              border: 2px;
+              border-style: solid;
+              border-color: #0275d8;
+          }
+          
+          #restDIV {
+              position: fixed;
+              top: 60px;
+              left: 34px;
+          }
+          
+          .restItem {
+              font-size: 16px;
+              margin:0;
+              padding:1;
+              resize: none;
+              font-family: "Courier New";
+              margin-bottom: 3px;
+              background-color: #1d2d40;	
+              color: #b3b3b3;
+              
+          }
+          
+          .restItem:focus {
+              background-color: #2f2f2f;	
+              color: #b3b3b3;
+          }
+        @media(min-width:768px) {
+            #wrapper {
+                padding-left: 0;
+            }
+
+            #wrapper.toggled {
+                padding-left: 250px;
+            }
+
+            #sidebar-wrapper {
+                width: 0;
+            }
+
+            #wrapper.toggled #sidebar-wrapper {
+                width: 250px;
+            }
+
+            #page-content-wrapper {
+                padding: 20px;
+                position: relative;
+            }
+
+            #wrapper.toggled #page-content-wrapper {
+                position: relative;
+                margin-right: 0;
+            }
+        }
+          
+      </style>
+  </head>
+    
+  <body>
+      
+      <!====COVER=====>
+      
+      <div id="tr_cover"><H1 ><br><br><br><br><i class="fa fa-cog fa-spin fa-4x"></i><br><br> We are getting smarter everyday...</H1><h3>please mazimise the window on you PC to continue...</h3></div>
+      
+      <!====POPUP_title====>>
+      <div class="modal fade" id="title_submit" tabindex="-1" role="dialog"  aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Create Web Page</h5>
+              </div>
+              <div class="modal-body">
+                <form>
+                  <div class="form-group">
+                    <label for="title-name" class="form-control-label">Title for the HTML:</label>
+                    <input type="text" class="form-control" id="title-name">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="set_title">Set</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      
+      
+      
+
+      <!====== NAVBAR and MODAL ========>
+      
+    <div class="pos-f-t fixed-top">
+      <div class="collapse" id="navbarToggleExternalContent">
+        <div class="bg-inverse p-3">
+          <h4 class="text-white"  style="float:right">Download</h4>
+          <span>
+        
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-outline-secondary dwnbar" data-toggle="modal" data-target="#myModal" id="dwn-html">
+              HTML
+            </button>
+
+            <button type="button" class="btn btn-outline-secondary dwnbar" data-toggle="modal" data-target="#myModal" id="dwn-css">
+              CSS
+            </button>
+
+            <button type="button" class="btn btn-outline-secondary dwnbar" data-toggle="modal" data-target="#myModal" id="dwn-js">
+              JavaScript
+            </button>
+              
+            <button type="button" class="btn btn-outline-secondary dwnbar" data-toggle="modal" data-target="#myModal" id="dwn-com">
+              Complete
+            </button>
+                
+          </span>
+        </div>
+      </div>
+        
+      <nav class="navbar navbar-inverse bg-primary navbar-toggleable-sm">
+          
+          <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a class="navbar-brand" href="index.php" style="margin-left:40px;margin-right:80px"><span class="fa fa-file-code-o" aria-hidden="true" style="color:WHITE;margin-right:8px"></span>HelloWorld!</a>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+              <li class="nav-item" style="margin-right:30px">
+                <a class="nav-link" href="index.php">Home</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="#" style="margin-right:30px">Create <span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item" style="margin-right:30px">
+                <a class="nav-link" href="report.php">Report Bug</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="#">About</a>
+              </li>
+            </ul>
+
+            <button class="collapse-brand btn btn-primary" style="margin-right:30px;width:200px" id="downloadButton" class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">Download
+              <span id="downloadIcon" class="fa fa-download" aria-hidden="true" style="color:white"></span>
+            </button>
+
+            <form class="form-inline my-2 my-lg-0">
+              <input class="form-control mr-sm-2" type="text" placeholder="Search">
+              <button disabled class="btn btn-success my-2 my-sm-0" type="submit"><span id="searchIcon" class="fa fa-search" aria-hidden="true" style="color:white"></span></button>
+            </form>
+          </div>
+        
+      </nav>
+    </div>
+
+          
+      <!-- Modal -->
+    <div class="modal fade container" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span>
+            </button>
+            <h5 class="modal-title" id="myModalLabel">SAMPLE</h5>
+            <div style="float:right">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" id="dwn-btn" class="btn btn-primary">Download<span id="downloadIcon" class="fa fa-download" aria-hidden="true" style="color:white;margin-left:10px" ></span></button>
+            </div>
+          </div>
+          <div class="modal-body">
+              <code style="background-color:white" id="dwn-text">NOthing</code>
+          </div>
+        </div>
+      </div>
+    </div>
+          
+          
+      <!=== MAIN BODY ===>
+
+      <div id="wrapper" style="margin-top:30px">
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper">
+            <ul class="sidebar-nav">
+                <!li class="sidebar-brand">
+                    <!a href="#">
+                      <!  Start Bootstrap
+                    <!/a>
+                <!/li>
+                <br><br><br><br><br><br>
+                <li>
+                    <a class="btn toggleButtonClass activeSide" data-toggle="collapse" href="#collapseHTML" aria-expanded="false" aria-controls="collapseHTML">HTML</a>
+                </li>
+                <li>
+                    <a class="btn toggleButtonClass" data-toggle="collapse" href="#collapseCSS" aria-expanded="false" aria-controls="collapseCSS">CSS</a>
+                </li>
+                <li>
+                    <a class="btn toggleButtonClass" data-toggle="collapse" href="#collapseJS" aria-expanded="false" aria-controls="collapseJS">JavaScript</a>
+                </li>
+                <li>
+                    <a class="toggleButtonClass activeSide" aria-controls="collapseOthers"></a>
+                </li>
+                <br><br><br><br><br><br><br><br><br>
+                <li>
+                    <a class="btn btn-warning" style="color:white" href="report.php">Report an issue</a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <div class="row">
+                <div class="col">
+                    <a href="#menu-toggle" class="btn fixed" id="menu-toggle">&lt;</a>
+                    <button type="button" class="btn btn-danger" id="runJS">Run JavaScript Code</button>
+                </div>
+            </div>
+        </div>
+      
+        <div class="container">
+              
+            <!----- REST CONTAINER------>  
+              <div id="restDIV">
+                  <div class="collapse" id="collapseHTML">
+                      <div class="restItem liveOut">
+                        <textarea class="form-control restItem card" id="textHTML">&lt;p id="paragraph"&gt;Hello World!&lt;/p&gt;</textarea>
+                      </div>
+                  </div>
+                  <div class="collapse" id="collapseCSS">
+                      <div class="restItem liveOut">
+                        <textarea class="form-control restItem card" id="textCSS">p { color: green; }</textarea>
+                      </div>
+                  </div>
+                  <div class="collapse" id="collapseJS">
+                      <div class="restItem">
+                          <textarea class="form-control restItem card" id="textJS" style="border-style:solid;border-color:red">document.getElementById("paragraph").innerHTML = "Hello Rob!";</textarea>
+                      </div>
+                  </div>
+                </div>
+              
+           <!-----OUTPUT CONTAINER------>
+                <div class="form-group output">
+                    <iframe class="form-control" id="output" style="resize:none"></iframe>
+                </div>
+
+                  <!---- CONTAINER BOXXES------>
+                
+          
+          </div>
+      </div>  
+      <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+      
+      
+      
+      <script type="text/javascript">
+      
+          
+          $("#tr_cover").hide();
+          if($(window).width() < 1140 || $(window).height() < 480){                
+                $("#tr_cover").show();
+            }
+          
+          
+          var titleDoc =  "Create Webpage";
+          $('#title_submit').modal('show');
+          $("#set_title").click(function() {
+              titleDoc = $("#title-name").val();
+              $('#title_submit').modal('hide');
+              $("#collapseHTML").collapse('show');
+              $("#wrapper").addClass("toggled");
+              $("title").html("Editor - "+titleDoc);
+          });
+          
+          
+          
+        $("#downloadButton").click(function() {
+            if($("#downloadIcon").hasClass("fa-download")){
+                $("#downloadIcon").removeClass("fa-download");
+                $("#downloadIcon").addClass("fa-times");
+                $('.dwnbar').collapse('hide');
+            } else {
+                $("#downloadIcon").addClass("fa-download");
+                $("#downloadIcon").removeClass("fa-times");
+            }
+            
+        }); 
+          
+        
+          
+        
+      $("#menu-toggle").click(function(e) {
+        if($("#menu-toggle").text() == ">"){
+          document.getElementById("menu-toggle").innerHTML = "<";
+        } else {
+           document.getElementById("menu-toggle").innerHTML = ">"; 
+        }
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+          
+          
+      });
+          
+          
+          
+         var numAct = $('.activeSide').length;
+          $(".toggleButtonClass").click(function() {
+              $(this).toggleClass("activeSide");
+              
+              numAct = $('.activeSide').length;
+              
+              if(numAct != 1){
+                $(".restItem").css({height: (($("#restDIV").height() / (numAct-1))) + "px"});
+              }
+          });
+          
+          $extraMargin = 65;
+        $("#restDIV").css({height: ($(window).innerHeight() - $extraMargin - 6) + "px"});
+        $("#output").css({width: (($(window).innerWidth() / 2)-2) + "px"});
+        $("#restDIV").css({width: (($(window).innerWidth() / 2)-42) + "px"});
+        $("#output").css({ minHeight: ($(window).innerHeight() - $extraMargin) + 'px' });
+        $(window).resize(function() {
+            if($(window).width() < 1140 || $(window).height() < 480){                
+                $("#tr_cover").show();
+            }
+            else{
+                $("#tr_cover").hide();
+                $("#output").css({ minHeight: ($(window).innerHeight() - $extraMargin) + 'px' });
+                $("#restDIV").css({height: ($(window).innerHeight() - $extraMargin - 6) + 'px' });
+                $("#output").css({width: (($(window).innerWidth() / 2)-2) + "px"});
+                $("#restDIV").css({width: (($(window).innerWidth() / 2)-42) + "px"});
+                $(".restItem").css({height: (($("#restDIV").height() / (numAct-1))) + "px"});
+            }
+        });
+         
+          
+          
+          $("#runJS").hide();
+          $("#collapseJS").on('show.bs.collapse', function(){
+              $("#runJS").show();
+          });
+          $("#collapseJS").on('hide.bs.collapse', function(){
+              $("#runJS").hide();
+          });
+          
+          
+          function updateOutput() {
+                $("iframe").contents().find("html").html("<html><head><style type='text/css'>" + $("#textCSS").val() + "</style></head><body>" + $("#textHTML").val() + "</body></html>"); 
+            }
+          
+          updateOutput();
+        
+            $(".liveOut").on('change keyup paste', function() {
+                updateOutput();
+            });
+          
+          $("#runJS").click(function() {
+              document.getElementById("output").contentWindow.eval($("#textJS").val());
+          });
+          
+          //===DOWNLOAD====//
+          
+          String.prototype.escapeHTML = function () {  
+              return(                                                                 
+                this.replace(/>/g,'&gt;').
+                     replace(/</g,'&lt;').
+                     replace(/"/g,'&quot;')
+              );
+            };
+          String.prototype.decodeHTML = function () {  
+              return(                                                                 
+                this.replace(/&gt;/g,'>').
+                     replace(/&lt;/g,'<').
+                     replace(/&quot;/g,/"/)
+              );
+            };
+            var codeEl = document.getElementById('dwn-text');
+          
+          var ext = "";
+          
+          $("#dwn-html").click(function() {
+              ext = ".html";
+              codeEl.innerHTML = "<html><head><title>" + titleDoc + "</title><style type='text/css'>" + titleDoc + ".css</style></head><body>" + $("#textHTML").text() + "</body></html>";
+              codeEl.innerHTML = codeEl.innerHTML.escapeHTML();
+          });
+          $("#dwn-css").click(function() {
+              ext = ".css";
+              codeEl.innerHTML = $("#textCSS").text();
+              codeEl.innerHTML = codeEl.innerHTML.escapeHTML();
+          });
+          
+          $("#dwn-js").click(function() {
+              ext = ".js";
+              codeEl.innerHTML = $("#textJS").text();
+              codeEl.innerHTML = codeEl.innerHTML.escapeHTML();
+          });
+          $("#dwn-com").click(function() {
+              ext = ".html";
+              codeEl.innerHTML = "<html><head><title>" + titleDoc + "</title><style type='text/css'>" + $("#textCSS").text() + ".css</style></head><body>" + $("#textHTML").text() + "<script type='text/javascript'>" + $("#textJS").text() + "</script" + "></body></html>";
+              codeEl.innerHTML = codeEl.innerHTML.escapeHTML();
+          });
+          function download(filename, text) {
+                var element = document.createElement('a');
+                element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+                element.setAttribute('download', filename);
+
+                element.style.display = 'none';
+                document.body.appendChild(element);
+
+                element.click();
+
+                document.body.removeChild(element);
+            }
+
+            // Start file download.
+            document.getElementById("dwn-btn").addEventListener("click", function(){
+                // Generate download of hello.txt file with some content
+                var text = document.getElementById("dwn-text").innerHTML.decodeHTML();
+                var filename = titleDoc + ext;
+    
+                download(filename, text)
+            }, false);
+          
+      </script>
+  </body>
+</html>
